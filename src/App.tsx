@@ -46,6 +46,7 @@ function App() {
       tools: "PHP, MySQL, JavaScript"
     }
   ];
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-indigo-900 text-gray-900 dark:text-white transition-colors duration-300">
       {/* Theme Toggle */}
@@ -81,7 +82,6 @@ function App() {
                 <a href="mailto:sivavithu15@live.com" className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                   <Mail className="w-5 h-5" /> sivavithu15@live.com
                 </a>
-             
                 <a href="https://www.linkedin.com/in/vithurshan-sivakumar-a55b2379/" className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" target="_blank" rel="noopener noreferrer">
                   <Linkedin className="w-5 h-5" /> LinkedIn
                 </a>
@@ -169,12 +169,24 @@ function App() {
                   <p className="text-gray-600 dark:text-gray-400 mb-4">{project.description}</p>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">Tools Used: {project.tools}</p>
                   <div className="flex gap-4 justify-center md:justify-start">
-                    <a href={project.github} className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={project.github}
+                      className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Github className="w-4 h-4" /> Code
                     </a>
-                    <a href={project.demo} className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300" target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4" /> Demo
-                    </a>
+                    {project.demo !== "#" && (
+                      <a
+                        href={project.demo}
+                        className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="w-4 h-4" /> Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
