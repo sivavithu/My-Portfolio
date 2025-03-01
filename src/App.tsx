@@ -93,7 +93,7 @@ function App() {
             <div className="md:w-1/2 flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-indigo-500/30 dark:border-blue-500/30">
                 <img 
-                  src="..public/images/vithu.jpg" 
+                  src="/images/vithu.jpg" 
                   alt="Sivakumar Vithurshan"
                   className="w-full h-full object-cover"
                 />
