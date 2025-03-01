@@ -33,7 +33,7 @@ function App() {
       title: "Expense-Tracker",
       description: "Developed a web app with a functional UI for managing and tracking financial transactions.",
       github: "https://github.com/sivavithu/expense-tracker",
-      demo: "https://expense-tracker-demo.com", // Replace with actual demo link
+      demo: "https://expense-tracker-fp8m.vercel.app/", // Replace with actual demo link
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80",
       tools: "Next.js, Tailwind, Clerk, Neon (PostgreSQL)"
     },
