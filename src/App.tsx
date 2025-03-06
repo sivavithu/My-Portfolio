@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Star, Code, Brain, Terminal, Sun, Moon } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Code, Brain, Terminal, Sun, Moon } from 'lucide-react';
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      document.getElementById('root').classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      document.getElementById('root').classList.remove('dark');
     }
   }, [darkMode]);
 
@@ -18,7 +18,7 @@ function App() {
       description: "Developed a web-based system to manage blood donations, donor records, and blood inventory efficiently. Implemented secure user authentication, real-time notifications for donation requests, and a streamlined database using Supabase.",
       github: "https://github.com/SAYANISHAN98/bbmsweb",
       demo: "#",
-      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80",
+      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
       tools: "React, Supabase, Tailwind"
     },
     {
@@ -26,15 +26,15 @@ function App() {
       description: "A mobile-friendly app connecting donors with recipients, featuring real-time requests, secure authentication, and push notifications using Supabase.",
       github: "https://github.com/sivavithu/BlOOD_aPP",
       demo: "#",
-      image: "https://images.unsplash.com/photo-1516384909395-2973423e5a31?auto=format&fit=crop&q=80",
+      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
       tools: "React Native (Expo), Supabase, Firebase (EAS)"
     },
     {
       title: "Expense-Tracker",
       description: "Developed a web app with a functional UI for managing and tracking financial transactions.",
       github: "https://github.com/sivavithu/expense-tracker",
-      demo: "https://expense-tracker-demo.com", // Replace with actual demo link
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80",
+      demo: "https://expense-tracker-fp8m.vercel.app/",
+      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
       tools: "Next.js, Tailwind, Clerk, Neon (PostgreSQL)"
     },
     {
@@ -42,12 +42,13 @@ function App() {
       description: "Developed a system allowing students to file complaints about hardware repairs in the department, streamlining the reporting process and tracking the status of repairs.",
       github: "https://github.com/sivavithu/Complaint-Management",
       demo: "#",
-      image: "https://images.unsplash.com/photo-1581094288796-7026d2d843a1?auto=format&fit=crop&q=80",
+      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
       tools: "PHP, MySQL, JavaScript"
     }
   ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-indigo-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-indigo-900 text-gray-900 dark:text-white transition-colors duration-300" id="root">
       {/* Theme Toggle */}
       <button
         onClick={() => setDarkMode(!darkMode)}
@@ -81,7 +82,6 @@ function App() {
                 <a href="mailto:sivavithu15@live.com" className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                   <Mail className="w-5 h-5" /> sivavithu15@live.com
                 </a>
-             
                 <a href="https://www.linkedin.com/in/vithurshan-sivakumar-a55b2379/" className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" target="_blank" rel="noopener noreferrer">
                   <Linkedin className="w-5 h-5" /> LinkedIn
                 </a>
@@ -93,7 +93,7 @@ function App() {
             <div className="md:w-1/2 flex justify-center">
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-indigo-500/30 dark:border-blue-500/30">
                 <img 
-                  src="..public/images/vithu.jpg" 
+                  src="/images/vithu.jpg" 
                   alt="Sivakumar Vithurshan"
                   className="w-full h-full object-cover"
                 />
@@ -163,18 +163,35 @@ function App() {
           <div className="grid md:grid-cols-2 gap-8">
             {projects.map((project, index) => (
               <div key={index} className="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-lg dark:shadow-none">
-                <img src={project.image} alt={project.title} className="w-full h-48 object-cover" />
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full h-48 object-cover" 
+                  crossOrigin="anonymous"
+                />
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">{project.description}</p>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">Tools Used: {project.tools}</p>
                   <div className="flex gap-4 justify-center md:justify-start">
-                    <a href={project.github} className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={project.github}
+                      className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Github className="w-4 h-4" /> Code
                     </a>
-                    <a href={project.demo} className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300" target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4" /> Demo
-                    </a>
+                    {project.demo !== "#" && (
+                      <a
+                        href={project.demo}
+                        className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="w-4 h-4" /> Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
