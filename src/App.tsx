@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Code, Brain, Terminal, Sun, Moon } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Code, Brain, Terminal, Sun, Moon, Heart, Smartphone, DollarSign, MessageSquare } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
     if (darkMode) {
@@ -12,13 +19,18 @@ function App() {
     }
   }, [darkMode]);
 
+  // Initialize EmailJS with the Public Key from environment variables
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
+
   const projects = [
     {
       title: "Blood Bank Management System",
       description: "Developed a web-based system to manage blood donations, donor records, and blood inventory efficiently. Implemented secure user authentication, real-time notifications for donation requests, and a streamlined database using Supabase.",
       github: "https://github.com/SAYANISHAN98/bbmsweb",
       demo: "#",
-      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
+      icon: Heart,
       tools: "React, Supabase, Tailwind"
     },
     {
@@ -26,7 +38,7 @@ function App() {
       description: "A mobile-friendly app connecting donors with recipients, featuring real-time requests, secure authentication, and push notifications using Supabase.",
       github: "https://github.com/sivavithu/BlOOD_aPP",
       demo: "#",
-      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
+      icon: Smartphone,
       tools: "React Native (Expo), Supabase, Firebase (EAS)"
     },
     {
@@ -34,7 +46,7 @@ function App() {
       description: "Developed a web app with a functional UI for managing and tracking financial transactions.",
       github: "https://github.com/sivavithu/expense-tracker",
       demo: "https://expense-tracker-fp8m.vercel.app/",
-      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
+      icon: DollarSign,
       tools: "Next.js, Tailwind, Clerk, Neon (PostgreSQL)"
     },
     {
@@ -42,10 +54,59 @@ function App() {
       description: "Developed a system allowing students to file complaints about hardware repairs in the department, streamlining the reporting process and tracking the status of repairs.",
       github: "https://github.com/sivavithu/Complaint-Management",
       demo: "#",
-      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
+      icon: MessageSquare,
       tools: "PHP, MySQL, JavaScript"
     }
   ];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setStatus('Sending...');
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus('Please fill in all fields.');
+      return;
+    }
+
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message
+    };
+
+    // Send notification email to you
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      templateParams
+    )
+      .then((response) => {
+        // Send auto-reply email to the sender
+        emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID,
+          templateParams
+        )
+          .then((response) => {
+            setStatus('Message sent successfully! A confirmation email has been sent to your inbox.');
+            setFormData({ name: '', email: '', message: '' });
+          })
+          .catch((error) => {
+            setStatus('Message sent, but failed to send confirmation email.');
+            console.error('Auto-reply error:', error);
+          });
+      })
+      .catch((error) => {
+        setStatus('Failed to send message. Please try again.');
+        console.error('Notification email error:', error);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-indigo-900 text-gray-900 dark:text-white transition-colors duration-300" id="root">
@@ -161,41 +222,41 @@ function App() {
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold mb-12 text-center">Featured Projects</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <div key={index} className="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-lg dark:shadow-none">
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-48 object-cover" 
-                  crossOrigin="anonymous"
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">{project.description}</p>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">Tools Used: {project.tools}</p>
-                  <div className="flex gap-4 justify-center md:justify-start">
-                    <a
-                      href={project.github}
-                      className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="w-4 h-4" /> Code
-                    </a>
-                    {project.demo !== "#" && (
+            {projects.map((project, index) => {
+              const IconComponent = project.icon;
+              return (
+                <div key={index} className="bg-white dark:bg-white/5 rounded-xl overflow-hidden shadow-lg dark:shadow-none">
+                  <div className="p-6 flex justify-center items-center h-48 bg-gray-100 dark:bg-gray-800">
+                    <IconComponent className="w-16 h-16 text-indigo-600 dark:text-blue-400" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">{project.description}</p>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">Tools Used: {project.tools}</p>
+                    <div className="flex gap-4 justify-center md:justify-start">
                       <a
-                        href={project.demo}
+                        href={project.github}
                         className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <ExternalLink className="w-4 h-4" /> Demo
+                        <Github className="w-4 h-4" /> Code
                       </a>
-                    )}
+                      {project.demo !== "#" && (
+                        <a
+                          href={project.demo}
+                          className="flex items-center gap-2 text-indigo-600 dark:text-blue-400 hover:text-indigo-500 dark:hover:text-blue-300"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-4 h-4" /> Demo
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -216,32 +277,52 @@ function App() {
                 <Mail className="w-8 h-8" />
               </a>
             </div>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <input 
                   type="text" 
+                  name="name"
                   placeholder="Your Name" 
+                  value={formData.name}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-300 dark:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+                  required
                 />
               </div>
               <div>
                 <input 
                   type="email" 
+                  name="email"
                   placeholder="Your Email" 
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-300 dark:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+                  required
                 />
               </div>
               <div>
                 <textarea 
+                  name="message"
                   placeholder="Your Message" 
                   rows={4}
+                  value={formData.message}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-gray-300 dark:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+                  required
                 ></textarea>
               </div>
-              <button className="w-full bg-indigo-600 hover:bg-indigo-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+              <button 
+                type="submit"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              >
                 Send Message
               </button>
             </form>
+            {status && (
+              <p className={`mt-4 text-center ${status.includes('successfully') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                {status}
+              </p>
+            )}
           </div>
         </div>
       </section>
